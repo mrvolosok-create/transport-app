@@ -2,36 +2,49 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org"></script>
     <style>
         :root {
-            --brand-pink: #d81b94; /* Тот самый розовый с логотипа */
-            --brand-dark: #000000;
-            --brand-gray: #1a1a1a;
+            --neon-pink: #ff0095;
+            --deep-black: #050505;
+            --accent-gray: #1a1a1a;
         }
 
         body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
+            font-family: 'Inter', 'Impact', sans-serif; 
             padding: 20px; 
             color: #ffffff; 
-            background-color: var(--brand-dark);
+            background-color: var(--deep-black);
             margin: 0;
+            overflow-x: hidden;
         }
 
+        /* Агрессивный заголовок с наклоном */
         .header {
-            text-align: center;
-            margin-bottom: 25px;
+            text-align: left;
+            margin-bottom: 30px;
+            transform: skewX(-10deg);
+            border-left: 5px solid var(--neon-pink);
+            padding-left: 15px;
         }
 
-        .header h3 {
-            font-size: 22px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
             margin: 0;
-            border-bottom: 2px solid var(--brand-pink);
-            display: inline-block;
-            padding-bottom: 5px;
+            line-height: 1;
+            text-transform: uppercase;
+            font-style: italic;
+            text-shadow: 3px 3px 0px var(--neon-pink);
+        }
+
+        .header p {
+            font-size: 14px;
+            color: var(--neon-pink);
+            font-weight: bold;
+            margin: 5px 0 0 0;
+            letter-spacing: 2px;
         }
 
         .form-group { margin-bottom: 20px; }
@@ -39,62 +52,81 @@
         label { 
             display: block; 
             margin-bottom: 8px; 
-            font-size: 13px; 
-            font-weight: 600;
-            color: var(--brand-pink);
+            font-size: 12px; 
+            font-weight: 900;
+            color: #888;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        /* Инпуты с острыми углами */
         input, select { 
             width: 100%; 
-            padding: 14px; 
-            border-radius: 12px; 
-            border: 1px solid #333; 
+            padding: 16px; 
+            border-radius: 0px; /* Острые углы для агрессии */
+            border: none;
+            border-bottom: 2px solid #333;
             box-sizing: border-box; 
-            background: var(--brand-gray); 
+            background: var(--accent-gray); 
             color: #ffffff; 
             font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
+            font-weight: bold;
+            transition: all 0.3s;
         }
 
         input:focus, select:focus {
-            border-color: var(--brand-pink);
+            border-bottom: 2px solid var(--neon-pink);
+            background: #222;
+            outline: none;
         }
 
-        /* Оформление кнопки в стиле РЕЙС ОК */
+        /* Кнопка "ГАЗ В ПОЛ" */
         button { 
             width: 100%; 
-            padding: 18px; 
-            background: var(--brand-pink); 
+            padding: 20px; 
+            background: var(--neon-pink); 
             color: white; 
             border: none; 
-            border-radius: 12px; 
+            border-radius: 0px;
             cursor: pointer; 
-            font-weight: 800; 
-            margin-top: 15px; 
-            font-size: 16px; 
+            font-weight: 900; 
+            font-size: 20px; 
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(216, 27, 148, 0.3);
+            font-style: italic;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: -5px 5px 0px #8a0051;
+            transition: all 0.1s;
         }
 
         button:active {
-            transform: scale(0.98);
-            opacity: 0.9;
+            transform: translate(-3px, 3px);
+            box-shadow: 0px 0px 0px #8a0051;
         }
 
-        ::placeholder { color: #666; }
+        button::after {
+            content: " >>>";
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        /* Кастомный календарь */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h3>РЕЙС ОК</h3>
-        <p style="font-size: 12px; color: #888; margin-top: 5px;">ДОСТАВКА НА СКЛАДЫ WB</p>
+        <h1>РЕЙС ОК</h1>
+        <p>ДОСТАВКА НА СКЛАДЫ WB</p>
     </div>
     
     <div class="form-group">
         <label>Город отгрузки</label>
-        <input type="text" id="city" placeholder="Например: Москва">
+        <input type="text" id="city" placeholder="ОТКУДА ГОНИМ?">
     </div>
 
     <div class="form-group">
@@ -105,32 +137,32 @@
     <div class="form-group">
         <label>Тип поставки</label>
         <select id="type">
-            <option value="Короб">📦 Короб</option>
-            <option value="Паллета">🧱 Паллета</option>
+            <option value="Короб">📦 КОРОБ</option>
+            <option value="Паллета">🧱 ПАЛЛЕТА</option>
         </select>
     </div>
 
     <div class="form-group">
         <label>Количество</label>
-        <input type="number" id="qty" placeholder="Кол-во коробов/паллет">
+        <input type="number" id="qty" placeholder="СКОЛЬКО ВЕЗЕМ?">
     </div>
 
     <div class="form-group">
-        <label>Название организации</label>
-        <input type="text" id="company" placeholder="Ваша компания">
+        <label>Организация</label>
+        <input type="text" id="company" placeholder="НАЗВАНИЕ КОМПАНИИ">
     </div>
 
     <div class="form-group">
-        <label>Номер телефона</label>
+        <label>Контактный телефон</label>
         <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
     </div>
 
-    <button onclick="sendData()">Отправить заявку</button>
+    <button onclick="sendData()">ОТПРАВИТЬ ЗАЯВКУ</button>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.headerColor = '#000000'; // Черная шапка в Telegram
+        tg.headerColor = '#050505';
 
         function sendData() {
             let data = {
@@ -143,10 +175,12 @@
             };
 
             if (!data.city || !data.phone || !data.company) {
-                tg.showAlert("Пожалуйста, заполните все обязательные поля!");
+                tg.HapticFeedback.notificationOccurred('error');
+                alert("ЗАПОЛНИ ВСЕ ПОЛЯ!");
                 return;
             }
 
+            tg.HapticFeedback.impactOccurred('heavy'); // Виброотклик при нажатии
             tg.sendData(JSON.stringify(data));
             tg.close();
         }
