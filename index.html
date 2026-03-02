@@ -3,134 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>РЕЙС ОК | APPLE STYLE</title>
+    <title>РЕЙС ОК | LUXURY EDITION</title>
     <script src="https://telegram.org"></script>
     <style>
         :root {
             --apple-pink: #ff2d55;
-            --apple-bg: #000000;
-            --card-bg: rgba(28, 28, 30, 0.7); /* Цвет системных карточек iOS */
-            --border-color: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-active: rgba(255, 45, 85, 0.2);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body { 
-            background-color: var(--apple-bg); 
-            color: #ffffff; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background: #000; 
+            color: #fff; 
+            font-family: -apple-system, system-ui, sans-serif; 
             margin: 0; 
-            padding: 24px;
-            -webkit-font-smoothing: antialiased;
+            padding: 20px;
+            overflow-x: hidden;
         }
 
-        /* Заголовок в стиле Apple */
-        .header-section { margin-bottom: 35px; margin-top: 10px; }
-        .header { 
-            font-size: 34px; 
-            font-weight: 800; 
+        /* Горизонтальный скролл городов */
+        .city-picker {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 12px;
+            padding: 10px 5px 25px 5px;
+            margin: 0 -20px; /* Чтобы скролл шел от края до края */
+            padding-left: 20px;
+            scrollbar-width: none; /* Убираем полосу скролла */
+        }
+        .city-picker::-webkit-scrollbar { display: none; }
+
+        .city-card {
+            flex: 0 0 140px; /* Ширина карточки */
+            height: 100px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            scroll-snap-align: center;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .city-card span {
+            font-size: 18px;
+            font-weight: 800;
             letter-spacing: -0.5px;
-            color: #fff;
-        }
-        .sub-header { 
-            color: var(--apple-pink); 
-            font-size: 12px; 
-            letter-spacing: 2px; 
-            font-weight: 600;
-            margin-top: 4px;
-            text-transform: uppercase;
+            opacity: 0.6;
         }
 
-        /* Крупные плашки ввода */
-        .input-group { margin-bottom: 24px; }
-        .label { 
-            color: #8e8e93; /* Текст подписей iOS */
-            font-size: 13px; 
-            margin-bottom: 10px; 
-            font-weight: 500; 
-            padding-left: 4px;
-            text-transform: uppercase;
+        .city-card.active {
+            background: var(--glass-active);
+            border-color: var(--apple-pink);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 45, 85, 0.15);
         }
+
+        .city-card.active span { opacity: 1; color: var(--apple-pink); }
+
+        /* Стили остальных полей (укрупненные) */
+        .label { color: #8e8e93; font-size: 13px; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group { margin-bottom: 30px; }
         
-        input, select { 
-            width: 100%; 
-            background: var(--card-bg); 
-            border: 1px solid var(--border-color); 
-            color: #fff; 
-            padding: 20px; /* Увеличил высоту плашек */
-            border-radius: 16px; /* Мягкие углы Apple */
-            box-sizing: border-box; 
-            font-size: 17px; /* Системный размер текста iOS */
-            backdrop-filter: blur(20px); /* Сильное размытие */
-            -webkit-backdrop-filter: blur(20px);
-            transition: all 0.2s ease-in-out;
-            appearance: none; /* Убираем стандартные стрелки */
+        input { 
+            width: 100%; background: var(--glass); border: 1px solid var(--border); color: #fff; 
+            padding: 22px; border-radius: 18px; box-sizing: border-box; font-size: 18px; font-weight: 500;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
-        input:focus { 
-            border-color: var(--apple-pink); 
-            background: rgba(44, 44, 46, 0.9);
-            outline: none;
-        }
-
-        /* Кастомная стрелочка для select */
-        .select-wrapper { position: relative; }
-        .select-wrapper::after {
-            content: '▼';
-            font-size: 12px;
-            color: #8e8e93;
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-        }
-
-        /* Кнопка в стиле iOS */
         .btn { 
-            width: 100%; 
-            background: var(--apple-pink);
-            color: #fff; 
-            border: none; 
-            padding: 22px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            border-radius: 18px; 
-            margin-top: 20px; 
-            font-size: 17px;
-            letter-spacing: -0.2px;
-            transition: all 0.2s ease;
+            width: 100%; background: var(--apple-pink); color: #fff; border: none; padding: 24px; 
+            font-weight: 700; border-radius: 20px; font-size: 18px; margin-top: 10px;
+            box-shadow: 0 10px 25px rgba(255, 45, 85, 0.3);
         }
-        .btn:active { 
-            transform: scale(0.97); 
-            opacity: 0.8; 
-        }
-
-        option { background: #1c1c1e; color: #fff; }
     </style>
 </head>
 <body>
-    <div class="header-section">
-        <div class="header">Рейс ОК</div>
-        <div class="sub-header">Логистика & Сервис</div>
+    <div style="margin-bottom: 30px;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 800; font-style: italic;">РЕЙС ОК</h1>
+        <p style="margin: 5px 0; color: var(--apple-pink); font-weight: 700; letter-spacing: 2px; font-size: 12px;">PREMIUM LOGISTICS</p>
     </div>
 
     <div class="input-group">
-        <div class="label">Город отгрузки</div>
-        <div class="select-wrapper">
-            <select id="city">
-                <option value="" disabled selected>Выберите город</option>
-                <option value="Коледино">Коледино</option>
-                <option value="Электросталь">Электросталь</option>
-                <option value="Тула">Тула</option>
-                <option value="Подольск">Подольск</option>
-                <option value="Казань">Казань</option>
-                <option value="Котовск">Котовск</option>
-                <option value="Рязань">Рязань</option>
-                <option value="Краснодар">Краснодар</option>
-                <option value="Воронеж">Воронеж</option>
-                <option value="Шушары">Шушары</option>
-                <option value="Екатеринбург">Екатеринбург</option>
-                <option value="Новосибирск">Новосибирск</option>
-            </select>
+        <div class="label">Выбор города</div>
+        <div class="city-picker" id="cityContainer">
+            <!-- Города добавятся через JS -->
         </div>
     </div>
 
@@ -140,54 +103,51 @@
     </div>
 
     <div class="input-group">
-        <div class="label">Тип поставки</div>
-        <div class="select-wrapper">
-            <select id="type">
-                <option value="КОРОБ">📦 Короб</option>
-                <option value="ПАЛЛЕТА">🏗️ Паллета</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="input-group">
-        <div class="label">Количество</div>
-        <input type="number" id="qty" placeholder="Сколько везем?">
-    </div>
-
-    <div class="input-group">
         <div class="label">Организация</div>
         <input type="text" id="company" placeholder="ИНН или Название">
     </div>
 
     <div class="input-group">
-        <div class="label">Телефон для связи</div>
+        <div class="label">Ваш телефон</div>
         <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
     </div>
 
-    <button class="btn" id="send">Забронировать</button>
+    <button class="btn" id="send">ЗАБРОНИРОВАТЬ</button>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Дата на завтра по умолчанию
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+        const cities = ["Коледино", "Казань", "Электросталь", "Тула", "Подольск", "Краснодар", "Воронеж", "Шушары", "Екатеринбург"];
+        let selectedCity = "";
 
+        // Генерация карточек городов
+        const container = document.getElementById('cityContainer');
+        cities.forEach(name => {
+            const card = document.createElement('div');
+            card.className = 'city-card';
+            card.innerHTML = `<span>${name}</span>`;
+            card.onclick = () => {
+                document.querySelectorAll('.city-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedCity = name;
+                tg.HapticFeedback.impactOccurred('light');
+            };
+            container.appendChild(card);
+        });
+
+        // Кнопка отправить
         document.getElementById('send').addEventListener('click', () => {
             const data = {
-                city: document.getElementById('city').value,
+                city: selectedCity,
                 date: document.getElementById('date').value,
-                type: document.getElementById('type').value,
-                qty: document.getElementById('qty').value,
                 company: document.getElementById('company').value,
                 phone: document.getElementById('phone').value
             };
             
-            if (!data.city || !data.phone) {
+            if (!selectedCity || !data.phone) {
                 tg.HapticFeedback.notificationOccurred('error');
-                tg.showAlert("Пожалуйста, заполните основные данные");
+                tg.showAlert("Выберите город и введите телефон");
                 return;
             }
 
