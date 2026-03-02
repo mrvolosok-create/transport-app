@@ -3,190 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>РЕЙС ОК | PREMIUM</title>
+    <title>РЕЙС ОК | TRENDS 2025</title>
     <script src="https://telegram.org"></script>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
             --brand-pink: #ff007a;
-            --premium-black: #0a0a0a;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-card: rgba(255, 255, 255, 0.05);
+            --border-white: rgba(255, 255, 255, 0.08);
         }
 
         body { 
-            background-color: var(--premium-black); 
-            background-image: radial-gradient(circle at top right, #250012, transparent);
+            background: #000; 
             color: #fff; 
-            font-family: 'Inter', -apple-system, sans-serif; 
+            font-family: 'Montserrat', sans-serif; 
             margin: 0; 
-            padding: 24px; 
-            line-height: 1.5;
+            padding: 24px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Заголовок */
-        .header-section { margin-bottom: 30px; text-align: left; }
-        .header { 
-            font-size: 32px; 
-            font-weight: 900; 
-            letter-spacing: -1px;
-            background: linear-gradient(to right, #fff, var(--brand-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-style: italic;
-        }
-        .sub-header { 
-            color: var(--brand-pink); 
-            font-size: 11px; 
-            letter-spacing: 3px; 
-            opacity: 0.8; 
-            margin-top: 4px;
-            font-weight: 700;
+        /* Трендовый заголовок: Огромный, жирный, с отрицательным межбуквенным интервалом */
+        .hero-title {
+            font-weight: 900;
+            font-size: 46px;
+            line-height: 0.9;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
 
-        /* Поля ввода */
-        .input-group { margin-bottom: 20px; }
-        .label { 
-            color: #888; 
-            font-size: 10px; 
-            margin-bottom: 8px; 
-            font-weight: 800; 
-            letter-spacing: 1px;
-            padding-left: 4px;
-        }
-        
-        input, select { 
-            width: 100%; 
-            background: var(--glass-bg); 
-            border: 1px solid var(--border-color); 
-            color: #fff; 
-            padding: 16px; 
-            border-radius: 12px; 
-            box-sizing: border-box; 
-            font-size: 15px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+        .hero-subtitle {
+            color: var(--brand-pink);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            opacity: 0.9;
         }
 
-        input:focus, select:focus { 
-            border-color: var(--brand-pink); 
-            background: rgba(255, 0, 122, 0.05);
-            outline: none;
-            box-shadow: 0 0 15px rgba(255, 0, 122, 0.2);
+        /* Этикетки полей: Мелкие, но очень жирные */
+        .label {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #555;
+            margin-bottom: 12px;
+            text-transform: uppercase;
         }
 
-        /* Кнопка */
-        .btn { 
-            width: 100%; 
-            background: linear-gradient(135deg, #ff007a, #b30056);
-            color: #fff; 
-            border: none; 
-            padding: 20px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            border-radius: 14px; 
-            margin-top: 15px; 
+        .input-group { margin-bottom: 35px; }
+
+        /* Поля в стиле Glassmorphism */
+        input, select {
+            width: 100%;
+            background: var(--glass-card);
+            border: 1px solid var(--border-white);
+            color: #fff;
+            padding: 22px;
+            border-radius: 20px;
             font-size: 16px;
+            font-weight: 600;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        input:focus { border-color: var(--brand-pink); background: rgba(255, 255, 255, 0.08); outline: none; }
+
+        /* Счетчик: Крупные кнопки и жирный шрифт */
+        .counter-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--glass-card);
+            border: 1px solid var(--border-white);
+            border-radius: 24px;
+            padding: 12px;
+            backdrop-filter: blur(20px);
+        }
+
+        .counter-btn {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border: none;
+            border-radius: 18px;
+            color: #000;
+            font-size: 24px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .counter-btn:active { transform: scale(0.9); opacity: 0.8; }
+
+        .counter-value {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        /* Кнопка действия: Массивная и яркая */
+        .btn-submit {
+            width: 100%;
+            background: var(--brand-pink);
+            color: #fff;
+            border: none;
+            padding: 26px;
+            font-weight: 900;
+            border-radius: 24px;
+            font-size: 18px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 8px 20px rgba(255, 0, 122, 0.3);
+            margin-top: 20px;
+            box-shadow: 0 15px 35px rgba(255, 0, 122, 0.25);
             transition: all 0.3s ease;
         }
-        .btn:active { transform: scale(0.96); box-shadow: 0 4px 10px rgba(255, 0, 122, 0.2); }
 
-        option { background: #111; color: #fff; }
+        .btn-submit:active { transform: scale(0.96); }
+
+        /* Убираем стандартную иконку календаря для стиля */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body>
-    <div class="header-section">
-        <div class="header">РЕЙС ОК</div>
-        <div class="sub-header">LOGISTICS & PREMIUM SERVICE</div>
-    </div>
+
+    <div class="hero-title">РЕЙС<br>ОК</div>
+    <div class="hero-subtitle">PREMIUM LOGISTICS SERVICE</div>
 
     <div class="input-group">
-        <div class="label">ГОРОД ОТГРУЗКИ</div>
+        <div class="label">Город отгрузки</div>
         <select id="city">
             <option value="" disabled selected>ВЫБЕРИТЕ ГОРОД</option>
-            <option value="Коледино">Коледино</option>
-            <option value="Электросталь">Электросталь</option>
-            <option value="Тула">Тула</option>
-            <option value="Подольск">Подольск</option>
-            <option value="Казань">Казань</option>
-            <option value="Котовск">Котовск</option>
-            <option value="Рязань">Рязань</option>
-            <option value="Краснодар">Краснодар</option>
-            <option value="Волгоград">Волгоград</option>
-            <option value="Невинномысск">Невинномысск</option>
-            <option value="Новосемейкино">Новосемейкино</option>
-            <option value="Сарапул">Сарапул</option>
-            <option value="Воронеж">Воронеж</option>
-            <option value="Шушары">Шушары</option>
-            <option value="Уткина Заводь">Уткина Заводь</option>
-            <option value="Екатеринбург">Екатеринбург</option>
-            <option value="Владимир">Владимир</option>
-            <option value="Пенза">Пенза</option>
-            <option value="Новосибирск">Новосибирск</option>
+            <option value="КОЛЕДИНО">КОЛЕДИНО</option>
+            <option value="КАЗАНЬ">КАЗАНЬ</option>
+            <option value="ТУЛА">ТУЛА</option>
+            <option value="ЭЛЕКТРОСТАЛЬ">ЭЛЕКТРОСТАЛЬ</option>
         </select>
     </div>
 
     <div class="input-group">
-        <div class="label">ДАТА ОТГРУЗКИ</div>
-        <input type="date" id="date">
+        <div class="label">Количество единиц</div>
+        <div class="counter-container">
+            <button type="button" class="counter-btn" onclick="updateQty(-1)">–</button>
+            <div class="counter-value" id="qty_display">1</div>
+            <button type="button" class="counter-btn" onclick="updateQty(1)">+</button>
+        </div>
     </div>
 
     <div class="input-group">
-        <div class="label">ТИП ПОСТАВКИ</div>
-        <select id="type">
-            <option value="КОРОБ">📦 КОРОБ (от 300₽)</option>
-            <option value="ПАЛЛЕТА">🏗️ ПАЛЛЕТА (от 1600₽)</option>
-        </select>
+        <div class="label">Дата поставки</div>
+        <input type="date" id="date" value="2026-03-02">
     </div>
 
     <div class="input-group">
-        <div class="label">КОЛИЧЕСТВО</div>
-        <input type="number" id="qty" placeholder="СКОЛЬКО ЕДИНИЦ?">
+        <div class="label">Организация</div>
+        <input type="text" id="company" placeholder="НАЗВАНИЕ КОМПАНИИ">
     </div>
 
     <div class="input-group">
-        <div class="label">ОРГАНИЗАЦИЯ (ИНН / НАЗВАНИЕ)</div>
-        <input type="text" id="company" placeholder="ДЛЯ ДОКУМЕНТОВ">
-    </div>
-
-    <div class="input-group">
-        <div class="label">КОНТАКТНЫЙ ТЕЛЕФОН</div>
+        <div class="label">Телефон</div>
         <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
     </div>
 
-    <button class="btn" id="send">ЗАБРОНИРОВАТЬ МЕСТО</button>
+    <button class="btn-submit" id="main_btn">ЗАБРОНИРОВАТЬ</button>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Авто-дата на завтра
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+        let count = 1;
 
-        document.getElementById('send').addEventListener('click', () => {
-            const data = {
+        function updateQty(val) {
+            count = Math.max(1, count + val);
+            document.getElementById('qty_display').innerText = count;
+            tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        document.getElementById('main_btn').addEventListener('click', () => {
+            const result = {
                 city: document.getElementById('city').value,
+                qty: count,
                 date: document.getElementById('date').value,
-                type: document.getElementById('type').value,
-                qty: document.getElementById('qty').value,
                 company: document.getElementById('company').value,
                 phone: document.getElementById('phone').value
             };
-            
-            if (!data.city || !data.phone || !data.company) {
+
+            if (!result.city || !result.phone) {
                 tg.HapticFeedback.notificationOccurred('error');
-                tg.showAlert("Пожалуйста, заполните все данные для связи");
+                tg.showAlert("Заполните город и телефон!");
                 return;
             }
 
-            tg.HapticFeedback.impactOccurred('medium'); // Виброотклик
-            tg.sendData(JSON.stringify(data));
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.sendData(JSON.stringify(result));
         });
     </script>
 </body>
 </html>
-
