@@ -2,169 +2,57 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>РЕЙС ОК - Доставка на склады WB</title>
     <script src="https://telegram.org"></script>
     <style>
-        :root {
-            --neon-pink: #ff0095;
-            --deep-black: #050505;
-            --accent-gray: #1a1a1a;
-        }
-
-        body { 
-            font-family: 'Inter', 'Impact', sans-serif; 
-            padding: 20px; 
-            color: #ffffff; 
-            background-color: var(--deep-black);
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* Агрессивный заголовок с наклоном */
-        .header {
-            text-align: left;
-            margin-bottom: 30px;
-            transform: skewX(-10deg);
-            border-left: 5px solid var(--neon-pink);
-            padding-left: 15px;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 900;
-            margin: 0;
-            line-height: 1;
-            text-transform: uppercase;
-            font-style: italic;
-            text-shadow: 3px 3px 0px var(--neon-pink);
-        }
-
-        .header p {
-            font-size: 14px;
-            color: var(--neon-pink);
-            font-weight: bold;
-            margin: 5px 0 0 0;
-            letter-spacing: 2px;
-        }
-
-        .form-group { margin-bottom: 20px; }
-
-        label { 
-            display: block; 
-            margin-bottom: 8px; 
-            font-size: 12px; 
-            font-weight: 900;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Инпуты с острыми углами */
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 20px; text-transform: uppercase; }
+        .header { color: #ff007a; font-weight: bold; font-style: italic; font-size: 24px; margin-bottom: 5px; }
+        .sub-header { color: #ff007a; font-size: 10px; margin-bottom: 20px; }
+        .label { color: #888; font-size: 10px; margin-bottom: 5px; font-weight: bold; }
         input, select { 
-            width: 100%; 
-            padding: 16px; 
-            border-radius: 0px; /* Острые углы для агрессии */
-            border: none;
-            border-bottom: 2px solid #333;
-            box-sizing: border-box; 
-            background: var(--accent-gray); 
-            color: #ffffff; 
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
+            width: 100%; background: #1a1a1a; border: 1px solid #333; color: #fff; 
+            padding: 12px; margin-bottom: 15px; border-radius: 4px; box-sizing: border-box;
         }
-
-        input:focus, select:focus {
-            border-bottom: 2px solid var(--neon-pink);
-            background: #222;
-            outline: none;
-        }
-
-        /* Кнопка "ГАЗ В ПОЛ" */
-        button { 
-            width: 100%; 
-            padding: 20px; 
-            background: var(--neon-pink); 
-            color: white; 
-            border: none; 
-            border-radius: 0px;
-            cursor: pointer; 
-            font-weight: 900; 
-            font-size: 20px; 
-            text-transform: uppercase;
-            font-style: italic;
-            letter-spacing: 2px;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: -5px 5px 0px #8a0051;
-            transition: all 0.1s;
-        }
-
-        button:active {
-            transform: translate(-3px, 3px);
-            box-shadow: 0px 0px 0px #8a0051;
-        }
-
-        button::after {
-            content: " >>>";
-            font-size: 14px;
-            opacity: 0.7;
-        }
-
-        /* Кастомный календарь */
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
+        input::placeholder { color: #555; font-weight: bold; }
+        .btn { 
+            width: 100%; background: #ff007a; color: #fff; border: none; padding: 15px; 
+            font-weight: bold; cursor: pointer; border-radius: 4px; margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>РЕЙС ОК</h1>
-        <p>ДОСТАВКА НА СКЛАДЫ WB</p>
-    </div>
-    
-    <div class="form-group">
-        <label>Город отгрузки</label>
-        <input type="text" id="city" placeholder="ОТКУДА ГОНИМ?">
-    </div>
+    <div class="header">РЕЙС ОК</div>
+    <div class="sub-header">ДОСТАВКА НА СКЛАДЫ WB</div>
 
-    <div class="form-group">
-        <label>Дата отгрузки</label>
-        <input type="date" id="date">
-    </div>
+    <div class="label">ГОРОД ОТГРУЗКИ</div>
+    <input type="text" id="city" placeholder="ОТКУДА ГОНИМ?">
 
-    <div class="form-group">
-        <label>Тип поставки</label>
-        <select id="type">
-            <option value="Короб">📦 КОРОБ</option>
-            <option value="Паллета">🧱 ПАЛЛЕТА</option>
-        </select>
-    </div>
+    <div class="label">ДАТА ОТГРУЗКИ</div>
+    <input type="date" id="date" value="2026-03-02">
 
-    <div class="form-group">
-        <label>Количество</label>
-        <input type="number" id="qty" placeholder="СКОЛЬКО ВЕЗЕМ?">
-    </div>
+    <div class="label">ТИП ПОСТАВКИ</div>
+    <select id="type">
+        <option value="КОРОБ">📦 КОРОБ</option>
+        <option value="МОНОПАЛЛЕТ">🏗️ МОНОПАЛЛЕТ</option>
+    </select>
 
-    <div class="form-group">
-        <label>Организация</label>
-        <input type="text" id="company" placeholder="НАЗВАНИЕ КОМПАНИИ">
-    </div>
+    <div class="label">КОЛИЧЕСТВО</div>
+    <input type="number" id="qty" placeholder="СКОЛЬКО ВЕЗЕМ?">
 
-    <div class="form-group">
-        <label>Контактный телефон</label>
-        <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
-    </div>
+    <div class="label">ОРГАНИЗАЦИЯ</div>
+    <input type="text" id="company" placeholder="НАЗВАНИЕ КОМПАНИИ">
 
-    <button onclick="sendData()">ОТПРАВИТЬ ЗАЯВКУ</button>
+    <div class="label">КОНТАКТНЫЙ ТЕЛЕФОН</div>
+    <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
+
+    <button class="btn" id="send">ОТПРАВИТЬ ЗАЯВКУ >>></button>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.headerColor = '#050505';
 
-        function sendData() {
+        document.getElementById('send').addEventListener('click', () => {
             let data = {
                 city: document.getElementById('city').value,
                 date: document.getElementById('date').value,
@@ -173,17 +61,16 @@
                 company: document.getElementById('company').value,
                 phone: document.getElementById('phone').value
             };
-
-            if (!data.city || !data.phone || !data.company) {
-                tg.HapticFeedback.notificationOccurred('error');
-                alert("ЗАПОЛНИ ВСЕ ПОЛЯ!");
+            
+            // Проверка на пустые поля
+            if (!data.city || !data.phone) {
+                alert("Заполни все поля!");
                 return;
             }
 
-            tg.HapticFeedback.impactOccurred('heavy'); // Виброотклик при нажатии
-            tg.sendData(JSON.stringify(data));
-            tg.close();
-        }
+            tg.sendData(JSON.stringify(data)); // Отправляем JSON в Python-бот
+        });
     </script>
 </body>
 </html>
+
