@@ -3,157 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>РЕЙС ОК | LUXURY EDITION</title>
+    <title>РЕЙС ОК | PREMIUM</title>
     <script src="https://telegram.org"></script>
     <style>
         :root {
-            --apple-pink: #ff2d55;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-active: rgba(255, 45, 85, 0.2);
-            --border: rgba(255, 255, 255, 0.1);
+            --brand-pink: #ff007a;
+            --premium-black: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
         body { 
-            background: #000; 
+            background-color: var(--premium-black); 
+            background-image: radial-gradient(circle at top right, #250012, transparent);
             color: #fff; 
-            font-family: -apple-system, system-ui, sans-serif; 
+            font-family: 'Inter', -apple-system, sans-serif; 
             margin: 0; 
-            padding: 20px;
-            overflow-x: hidden;
+            padding: 24px; 
+            line-height: 1.5;
         }
 
-        /* Горизонтальный скролл городов */
-        .city-picker {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 12px;
-            padding: 10px 5px 25px 5px;
-            margin: 0 -20px; /* Чтобы скролл шел от края до края */
-            padding-left: 20px;
-            scrollbar-width: none; /* Убираем полосу скролла */
+        /* Заголовок */
+        .header-section { margin-bottom: 30px; text-align: left; }
+        .header { 
+            font-size: 32px; 
+            font-weight: 900; 
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, var(--brand-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-style: italic;
         }
-        .city-picker::-webkit-scrollbar { display: none; }
-
-        .city-card {
-            flex: 0 0 140px; /* Ширина карточки */
-            height: 100px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            scroll-snap-align: center;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .sub-header { 
+            color: var(--brand-pink); 
+            font-size: 11px; 
+            letter-spacing: 3px; 
+            opacity: 0.8; 
+            margin-top: 4px;
+            font-weight: 700;
         }
 
-        .city-card span {
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            opacity: 0.6;
+        /* Поля ввода */
+        .input-group { margin-bottom: 20px; }
+        .label { 
+            color: #888; 
+            font-size: 10px; 
+            margin-bottom: 8px; 
+            font-weight: 800; 
+            letter-spacing: 1px;
+            padding-left: 4px;
         }
-
-        .city-card.active {
-            background: var(--glass-active);
-            border-color: var(--apple-pink);
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(255, 45, 85, 0.15);
-        }
-
-        .city-card.active span { opacity: 1; color: var(--apple-pink); }
-
-        /* Стили остальных полей (укрупненные) */
-        .label { color: #8e8e93; font-size: 13px; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        .input-group { margin-bottom: 30px; }
         
-        input { 
-            width: 100%; background: var(--glass); border: 1px solid var(--border); color: #fff; 
-            padding: 22px; border-radius: 18px; box-sizing: border-box; font-size: 18px; font-weight: 500;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        input, select { 
+            width: 100%; 
+            background: var(--glass-bg); 
+            border: 1px solid var(--border-color); 
+            color: #fff; 
+            padding: 16px; 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            font-size: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        .btn { 
-            width: 100%; background: var(--apple-pink); color: #fff; border: none; padding: 24px; 
-            font-weight: 700; border-radius: 20px; font-size: 18px; margin-top: 10px;
-            box-shadow: 0 10px 25px rgba(255, 45, 85, 0.3);
+        input:focus, select:focus { 
+            border-color: var(--brand-pink); 
+            background: rgba(255, 0, 122, 0.05);
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 0, 122, 0.2);
         }
+
+        /* Кнопка */
+        .btn { 
+            width: 100%; 
+            background: linear-gradient(135deg, #ff007a, #b30056);
+            color: #fff; 
+            border: none; 
+            padding: 20px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            border-radius: 14px; 
+            margin-top: 15px; 
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(255, 0, 122, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn:active { transform: scale(0.96); box-shadow: 0 4px 10px rgba(255, 0, 122, 0.2); }
+
+        option { background: #111; color: #fff; }
     </style>
 </head>
 <body>
-    <div style="margin-bottom: 30px;">
-        <h1 style="margin: 0; font-size: 36px; font-weight: 800; font-style: italic;">РЕЙС ОК</h1>
-        <p style="margin: 5px 0; color: var(--apple-pink); font-weight: 700; letter-spacing: 2px; font-size: 12px;">PREMIUM LOGISTICS</p>
+    <div class="header-section">
+        <div class="header">РЕЙС ОК</div>
+        <div class="sub-header">LOGISTICS & PREMIUM SERVICE</div>
     </div>
 
     <div class="input-group">
-        <div class="label">Выбор города</div>
-        <div class="city-picker" id="cityContainer">
-            <!-- Города добавятся через JS -->
-        </div>
+        <div class="label">ГОРОД ОТГРУЗКИ</div>
+        <select id="city">
+            <option value="" disabled selected>ВЫБЕРИТЕ ГОРОД</option>
+            <option value="Коледино">Коледино</option>
+            <option value="Электросталь">Электросталь</option>
+            <option value="Тула">Тула</option>
+            <option value="Подольск">Подольск</option>
+            <option value="Казань">Казань</option>
+            <option value="Котовск">Котовск</option>
+            <option value="Рязань">Рязань</option>
+            <option value="Краснодар">Краснодар</option>
+            <option value="Волгоград">Волгоград</option>
+            <option value="Невинномысск">Невинномысск</option>
+            <option value="Новосемейкино">Новосемейкино</option>
+            <option value="Сарапул">Сарапул</option>
+            <option value="Воронеж">Воронеж</option>
+            <option value="Шушары">Шушары</option>
+            <option value="Уткина Заводь">Уткина Заводь</option>
+            <option value="Екатеринбург">Екатеринбург</option>
+            <option value="Владимир">Владимир</option>
+            <option value="Пенза">Пенза</option>
+            <option value="Новосибирск">Новосибирск</option>
+        </select>
     </div>
 
     <div class="input-group">
-        <div class="label">Дата отгрузки</div>
+        <div class="label">ДАТА ОТГРУЗКИ</div>
         <input type="date" id="date">
     </div>
 
     <div class="input-group">
-        <div class="label">Организация</div>
-        <input type="text" id="company" placeholder="ИНН или Название">
+        <div class="label">ТИП ПОСТАВКИ</div>
+        <select id="type">
+            <option value="КОРОБ">📦 КОРОБ (от 300₽)</option>
+            <option value="ПАЛЛЕТА">🏗️ ПАЛЛЕТА (от 1600₽)</option>
+        </select>
     </div>
 
     <div class="input-group">
-        <div class="label">Ваш телефон</div>
+        <div class="label">КОЛИЧЕСТВО</div>
+        <input type="number" id="qty" placeholder="СКОЛЬКО ЕДИНИЦ?">
+    </div>
+
+    <div class="input-group">
+        <div class="label">ОРГАНИЗАЦИЯ (ИНН / НАЗВАНИЕ)</div>
+        <input type="text" id="company" placeholder="ДЛЯ ДОКУМЕНТОВ">
+    </div>
+
+    <div class="input-group">
+        <div class="label">КОНТАКТНЫЙ ТЕЛЕФОН</div>
         <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
     </div>
 
-    <button class="btn" id="send">ЗАБРОНИРОВАТЬ</button>
+    <button class="btn" id="send">ЗАБРОНИРОВАТЬ МЕСТО</button>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        const cities = ["Коледино", "Казань", "Электросталь", "Тула", "Подольск", "Краснодар", "Воронеж", "Шушары", "Екатеринбург"];
-        let selectedCity = "";
+        // Авто-дата на завтра
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
 
-        // Генерация карточек городов
-        const container = document.getElementById('cityContainer');
-        cities.forEach(name => {
-            const card = document.createElement('div');
-            card.className = 'city-card';
-            card.innerHTML = `<span>${name}</span>`;
-            card.onclick = () => {
-                document.querySelectorAll('.city-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                selectedCity = name;
-                tg.HapticFeedback.impactOccurred('light');
-            };
-            container.appendChild(card);
-        });
-
-        // Кнопка отправить
         document.getElementById('send').addEventListener('click', () => {
             const data = {
-                city: selectedCity,
+                city: document.getElementById('city').value,
                 date: document.getElementById('date').value,
+                type: document.getElementById('type').value,
+                qty: document.getElementById('qty').value,
                 company: document.getElementById('company').value,
                 phone: document.getElementById('phone').value
             };
             
-            if (!selectedCity || !data.phone) {
+            if (!data.city || !data.phone || !data.company) {
                 tg.HapticFeedback.notificationOccurred('error');
-                tg.showAlert("Выберите город и введите телефон");
+                tg.showAlert("Пожалуйста, заполните все данные для связи");
                 return;
             }
 
-            tg.HapticFeedback.impactOccurred('medium');
+            tg.HapticFeedback.impactOccurred('medium'); // Виброотклик
             tg.sendData(JSON.stringify(data));
         });
     </script>
 </body>
 </html>
+
