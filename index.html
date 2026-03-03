@@ -10,6 +10,7 @@
         :root {
             --neon-purple: #9d50bb;
             --neon-pink: #ff007a;
+            --bg-deep: #0f0c29;
         }
 
         body { 
@@ -20,6 +21,7 @@
             margin: 0; padding: 20px; 
             -webkit-font-smoothing: antialiased;
             text-transform: uppercase;
+            overflow-x: hidden;
         }
 
         .header-section { margin-bottom: 25px; text-align: center; }
@@ -159,7 +161,6 @@
             document.getElementById('date_wb').value = `${day}.${month}.${year}`;
         }
 
-        // Сегодняшняя дата по умолчанию
         const today = new Date();
         document.getElementById('date_reisok').value = today.toISOString().split('T')[0];
         updateWBDate();
@@ -176,18 +177,21 @@
             };
             
             if (!data.city || !data.phone || !data.company) {
+                tg.showAlert("ЗАПОЛНИТЕ ВСЕ ДАННЫЕ ДЛЯ БРОНИ");
                 tg.HapticFeedback.notificationOccurred('error');
-                tg.showAlert("ЗАПОЛНИТЕ ВСЕ ДАННЫЕ");
                 return;
             }
             
             tg.HapticFeedback.notificationOccurred('success');
             
-            // ОТПРАВЛЯЕМ ДАННЫЕ И ЗАКРЫВАЕМ ОКНО
+            // Отправляем данные боту
             tg.sendData(JSON.stringify(data));
-            tg.close(); 
+            
+            // Принудительное закрытие с микро-задержкой для стабильности
+            setTimeout(() => {
+                tg.close();
+            }, 150);
         });
     </script>
 </body>
 </html>
-
