@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>РЕЙС ОК</title>
-    <!-- ПРАВИЛЬНАЯ ССЫЛКА НА СКРИПТ ТЕЛЕГРАМА -->
-    <script src="https://telegram.org"></script>
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <!-- ИСПРАВЛЕННЫЕ ССЫЛКИ НА СКРИПТЫ И СТИЛИ -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root { --neon-pink: #ff007a; }
-        body { 
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); 
-            color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; 
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px;
             -webkit-font-smoothing: antialiased; text-transform: uppercase;
         }
         .header-section { margin-bottom: 25px; text-align: center; }
@@ -19,24 +19,24 @@
         .sub-header { color: var(--neon-pink); font-size: 10px; letter-spacing: 3px; font-weight: 700; opacity: 0.9; }
         .input-group { margin-bottom: 18px; }
         .label { color: rgba(255,255,255,0.6); font-size: 10px; margin-bottom: 8px; font-weight: 800; letter-spacing: 1.5px; }
-        input, select { 
-            width: 100%; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #fff; padding: 15px; border-radius: 12px; box-sizing: border-box; 
+        input, select {
+            width: 100%; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff; padding: 15px; border-radius: 12px; box-sizing: border-box;
             font-size: 16px; font-weight: 600; appearance: none; backdrop-filter: blur(10px);
         }
         .counter-container {
             display: flex; align-items: center; justify-content: space-between;
-            background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); 
+            background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px; padding: 6px;
         }
         .counter-btn {
-            width: 50px; height: 50px; background: rgba(255, 255, 255, 0.1); 
+            width: 50px; height: 50px; background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 24px; border-radius: 10px; cursor: pointer;
         }
         .counter-value { font-size: 26px; font-weight: 900; width: 50px; text-align: center; }
-        .btn-main { 
+        .btn-main {
             width: 100%; background: linear-gradient(45deg, var(--neon-pink), #9d50bb);
-            color: #fff; border: none; padding: 18_px; font-weight: 900; border-radius: 14px; 
+            color: #fff; border: none; padding: 18px; font-weight: 900; border-radius: 14px;
             margin-top: 15px; font-size: 15px; letter-spacing: 2px; cursor: pointer;
         }
     </style>
@@ -91,22 +91,29 @@
     <button type="button" class="btn-main" id="send">ЗАБРОНИРОВАТЬ</button>
 
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
+        // Инициализация Telegram WebApp с проверкой загрузки
+        let tg;
+        if (window.Telegram && window.Telegram.WebApp) {
+            tg = window.Telegram.WebApp;
+            tg.expand();
+        } else {
+            console.error('Telegram WebApp не загружен');
+            alert('Ошибка: Telegram WebApp не загружен');
+        }
 
         let count = 1;
 
-        // Обработка кнопок счетчика
+        // Обработка кнопок счётчика
         document.getElementById('plus').onclick = function() {
             count++;
             document.getElementById('qty_val').innerText = count;
-            tg.HapticFeedback.impactOccurred('medium');
+            if (tg) tg.HapticFeedback.impactOccurred('medium');
         };
 
         document.getElementById('minus').onclick = function() {
             if (count > 1) count--;
             document.getElementById('qty_val').innerText = count;
-            tg.HapticFeedback.impactOccurred('medium');
+            if (tg) tg.HapticFeedback.impactOccurred('medium');
         };
 
         // Логика даты
@@ -124,7 +131,7 @@
         document.getElementById('date_reisok').value = now.toISOString().split('T')[0];
         updateWBDate();
 
-        // ОТПРАВКА
+                // ОТПРАВКА И ЗАКРЫТИЕ
         document.getElementById('send').onclick = function() {
             const data = {
                 city: document.getElementById('city').value,
@@ -136,19 +143,45 @@
                 date_wb: document.getElementById('date_wb').value
             };
 
+            // Валидация обязательных полей
             if (!data.city || !data.phone || !data.company) {
-                tg.showAlert("Заполни все данные!");
+                if (tg) {
+                    tg.showAlert("Заполни все обязательные данные!");
+                } else {
+                    alert("Заполни все обязательные данные!");
+                }
                 return;
             }
 
-            tg.HapticFeedback.notificationOccurred('success');
-            
-            // Самая надежная команда
-            tg.sendData(JSON.stringify(data));
-            
-            // Если через 100мс не закрылось — закрываем принудительно
-            setTimeout(() => { tg.close(); }, 100);
-        };
-    </script>
+            // Подтверждение отправки и тактильная обратная связь
+            if (tg) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+
+            try {
+                // Отправка данных в Telegram
+                if (tg && tg.sendData) {
+                    tg.sendData(JSON.stringify(data));
+
+                    // Надежное закрытие: ждём немного для отправки, затем закрываем
+            setTimeout(() => {
+                if (tg && tg.close) {
+                    tg.close();
+                }
+            }, 300); // Увеличили время до 300 мс для надёжности
+        } else {
+            console.error('Метод sendData недоступен');
+            alert('Ошибка отправки данных. Попробуйте ещё раз.');
+        }
+    } catch (error) {
+        console.error('Ошибка при отправке данных:', error);
+        if (tg) {
+            tg.showAlert('Произошла ошибка при отправке. Проверьте подключение.');
+        } else {
+            alert('Произошла ошибка при отправке. Проверьте подключение.');
+        }
+    }
+};
+</script>
 </body>
 </html>
