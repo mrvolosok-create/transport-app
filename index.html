@@ -3,80 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>РЕЙС ОК | PREMIUM SERVICE</title>
+    <title>РЕЙС ОК | PREMIUM</title>
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            --neon-purple: #9d50bb;
-            --neon-pink: #ff007a;
-            --bg-deep: #0f0c29;
-        }
-
+        :root { --neon-pink: #ff007a; --bg-deep: #0f0c29; }
         body { 
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); 
-            background-attachment: fixed;
-            color: #fff; 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; padding: 20px; 
-            -webkit-font-smoothing: antialiased;
-            text-transform: uppercase;
-            overflow-x: hidden;
+            color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; 
+            -webkit-font-smoothing: antialiased; text-transform: uppercase;
         }
-
         .header-section { margin-bottom: 25px; text-align: center; }
-        .header { 
-            font-size: 32px; font-weight: 900; letter-spacing: 5px; 
-            text-shadow: 0 0 15px rgba(255, 0, 122, 0.5);
-        }
-        .sub-header { color: var(--neon-pink); font-size: 10px; letter-spacing: 3px; margin-top: 5px; font-weight: 700; opacity: 0.9; }
-
+        .header { font-size: 32px; font-weight: 900; letter-spacing: 5px; text-shadow: 0 0 15px rgba(255, 0, 122, 0.5); }
+        .sub-header { color: var(--neon-pink); font-size: 10px; letter-spacing: 3px; font-weight: 700; opacity: 0.9; }
         .input-group { margin-bottom: 18px; }
         .label { color: rgba(255,255,255,0.6); font-size: 10px; margin-bottom: 8px; font-weight: 800; letter-spacing: 1.5px; }
-        
         input, select { 
-            width: 100%; 
-            background: rgba(255, 255, 255, 0.07); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #fff; 
-            padding: 15px; border-radius: 12px; box-sizing: border-box; 
-            font-size: 16px; font-weight: 600; appearance: none;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            width: 100%; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #fff; padding: 15px; border-radius: 12px; box-sizing: border-box; 
+            font-size: 16px; font-weight: 600; appearance: none; backdrop-filter: blur(10px);
         }
-        input:focus, select:focus { 
-            border-color: var(--neon-pink); 
-            outline: none; 
-            box-shadow: 0 0 15px rgba(255, 0, 122, 0.2);
-        }
-        input:disabled { color: rgba(255,255,255,0.3); background: rgba(0,0,0,0.2); }
-
+        input:focus { border-color: var(--neon-pink); outline: none; }
         .counter-container {
             display: flex; align-items: center; justify-content: space-between;
-            background: rgba(255, 255, 255, 0.07); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
+            background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); 
             border-radius: 12px; padding: 6px;
         }
         .counter-btn {
-            width: 50px; height: 50px; 
-            background: rgba(255, 255, 255, 0.1); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff; font-size: 24px; font-weight: 400; border-radius: 10px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            width: 50px; height: 50px; background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 24px; border-radius: 10px;
         }
-        .counter-btn:active { background: var(--neon-pink); border-color: var(--neon-pink); }
         .counter-value { font-size: 26px; font-weight: 900; width: 50px; text-align: center; }
-
         .btn-main { 
-            width: 100%; 
-            background: linear-gradient(45deg, var(--neon-pink), #9d50bb);
-            color: #fff; border: none; 
-            padding: 18px; font-weight: 900; border-radius: 14px; 
+            width: 100%; background: linear-gradient(45deg, var(--neon-pink), #9d50bb);
+            color: #fff; border: none; padding: 18px; font-weight: 900; border-radius: 14px; 
             margin-top: 15px; font-size: 15px; letter-spacing: 2px;
-            box-shadow: 0 5px 20px rgba(255, 0, 122, 0.4);
         }
-        .btn-main:active { transform: scale(0.98); opacity: 0.9; }
-
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
     </style>
 </head>
@@ -85,7 +47,6 @@
         <div class="header">РЕЙС ОК</div>
         <div class="sub-header">PREMIUM LOGISTICS SERVICE</div>
     </div>
-
     <div class="input-group">
         <div class="label">Склад отгрузки</div>
         <select id="city">
@@ -97,17 +58,14 @@
             <option value="Подольск">ПОДОЛЬСК</option>
         </select>
     </div>
-
     <div class="input-group">
         <div class="label">Привоз на склад РЕЙСОК</div>
         <input type="date" id="date_reisok" onchange="updateWBDate()">
     </div>
-
     <div class="input-group">
         <div class="label">Отгрузка на склад ВБ</div>
-        <input type="text" id="date_wb" disabled placeholder="Выберите дату выше">
+        <input type="text" id="date_wb" disabled>
     </div>
-
     <div class="input-group">
         <div class="label">Количество единиц</div>
         <div class="counter-container">
@@ -116,7 +74,6 @@
             <button type="button" class="counter-btn" onclick="updateQty(1)">+</button>
         </div>
     </div>
-
     <div class="input-group">
         <div class="label">Тип поставки</div>
         <select id="type">
@@ -124,31 +81,25 @@
             <option value="ПАЛЛЕТА">🏗️ ПАЛЛЕТА</option>
         </select>
     </div>
-
     <div class="input-group">
         <div class="label">Организация</div>
         <input type="text" id="company" placeholder="ИНН / НАЗВАНИЕ">
     </div>
-
     <div class="input-group">
         <div class="label">Контактный номер</div>
         <input type="tel" id="phone" placeholder="+7 ——— ——— —— ——">
     </div>
-
     <button type="button" class="btn-main" id="send">ЗАБРОНИРОВАТЬ</button>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.headerColor = '#0f0c29';
-
         let count = 1;
         function updateQty(val) {
             count = Math.max(1, count + val);
             document.getElementById('qty_val').innerText = count;
             tg.HapticFeedback.impactOccurred('medium');
         }
-
         function updateWBDate() {
             const dateInput = document.getElementById('date_reisok').value;
             if (!dateInput) return;
@@ -160,7 +111,6 @@
             const year = wbDate.getFullYear();
             document.getElementById('date_wb').value = `${day}.${month}.${year}`;
         }
-
         const today = new Date();
         document.getElementById('date_reisok').value = today.toISOString().split('T')[0];
         updateWBDate();
@@ -175,22 +125,17 @@
                 date_reisok: document.getElementById('date_reisok').value,
                 date_wb: document.getElementById('date_wb').value
             };
-            
             if (!data.city || !data.phone || !data.company) {
-                tg.showAlert("ЗАПОЛНИТЕ ВСЕ ДАННЫЕ ДЛЯ БРОНИ");
-                tg.HapticFeedback.notificationOccurred('error');
+                tg.showAlert("ЗАПОЛНИТЕ ВСЕ ДАННЫЕ");
                 return;
             }
-            
             tg.HapticFeedback.notificationOccurred('success');
             
-            // Отправляем данные боту
+            // Самая важная связка для закрытия:
             tg.sendData(JSON.stringify(data));
             
-            // Принудительное закрытие с микро-задержкой для стабильности
-            setTimeout(() => {
-                tg.close();
-            }, 150);
+            // Если через 100мс всё еще открыто - закрываем принудительно
+            setTimeout(() => { tg.close(); }, 100);
         });
     </script>
 </body>
