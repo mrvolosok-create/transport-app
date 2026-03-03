@@ -3,209 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>РЕЙС ОК | BORK EDITION</title>
+    <title>РЕЙС ОК | BORK BLACK LUX</title>
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            --bork-silver: #c0c0c0; /* Шлифованный алюминий */
-            --bork-dark: #0d0d0d;
-            --bork-glass: rgba(255, 255, 255, 0.03);
-            --bork-border: rgba(255, 255, 255, 0.1);
-        }
-
         body { 
-            background-color: #000; 
-            color: #fff; 
+            background: #000; color: #fff; 
             font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            padding: 32px 24px; 
+            margin: 0; padding: 24px; 
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Лаконичный заголовок BORK */
-        .header-section { 
-            margin-bottom: 50px; 
-            text-align: center;
-            border-bottom: 1px solid var(--bork-border);
-            padding-bottom: 20px;
-        }
-        .header { 
-            font-size: 28px; 
-            font-weight: 900; 
-            letter-spacing: 6px; /* Растянутый текст как на технике */
-            color: #fff;
-            text-transform: uppercase;
-        }
-        .sub-header { 
-            color: #555; 
-            font-size: 9px; 
-            letter-spacing: 4px; 
-            margin-top: 8px;
-            font-weight: 400;
-            text-transform: uppercase;
-        }
+        /* Шапка: Крупнее и солиднее */
+        .header-section { margin-bottom: 45px; text-align: center; border-bottom: 1px solid #222; padding-bottom: 25px; }
+        .header { font-size: 34px; font-weight: 900; letter-spacing: 6px; text-transform: uppercase; }
+        .sub-header { color: #666; font-size: 11px; letter-spacing: 4px; margin-top: 6px; font-weight: 700; }
 
-        .input-group { margin-bottom: 32px; }
-
-        .label { 
-            color: #444; 
-            font-size: 10px; 
-            margin-bottom: 12px; 
-            font-weight: 700; 
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+        .input-group { margin-bottom: 35px; }
+        .label { color: #888; font-size: 12px; margin-bottom: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
         
+        /* Поля: Крупный текст 18px */
         input, select { 
-            width: 100%; 
-            background: var(--bork-glass); 
-            border: none;
-            border-bottom: 1px solid var(--bork-border); /* Стиль тонкой линии */
-            color: #fff; 
-            padding: 16px 4px; 
-            border-radius: 0px; /* Квадратные формы премиум-техники */
-            box-sizing: border-box; 
-            font-size: 16px;
-            font-weight: 300;
-            transition: all 0.4s ease;
-            appearance: none;
+            width: 100%; background: #111; border: 1px solid #333; color: #fff; 
+            padding: 20px; border-radius: 6px; box-sizing: border-box; 
+            font-size: 18px; /* Увеличено */
+            font-weight: 600; appearance: none;
         }
+        input:focus, select:focus { border-color: #fff; outline: none; background: #161616; }
 
-        input:focus { 
-            outline: none;
-            border-bottom: 1px solid var(--bork-silver);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Счетчик в стиле регулятора */
+        /* Счетчик: Очень крупные кнопки и цифры */
         .counter-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 10px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: #111; border: 1px solid #333; border-radius: 10px; padding: 12px;
         }
-
         .counter-btn {
-            width: 50px;
-            height: 50px;
-            border: 1px solid var(--bork-border);
-            background: none;
-            color: #fff;
-            font-size: 24px;
-            font-weight: 200;
-            border-radius: 50%; /* Круглые кнопки на квадратном фоне */
-            cursor: pointer;
-            transition: 0.3s;
+            width: 70px; height: 70px; background: #222; border: 1px solid #444;
+            color: #fff; font-size: 32px; font-weight: 400; border-radius: 8px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
+        .counter-btn:active { background: #fff; color: #000; }
+        .counter-value { font-size: 34px; font-weight: 900; width: 60px; text-align: center; color: #fff; }
 
-        .counter-btn:active {
-            border-color: var(--bork-silver);
-            color: var(--bork-silver);
+        /* Кнопка: Текст 16px, жирный */
+        .btn-main { 
+            width: 100%; background: #fff; color: #000; border: none; 
+            padding: 24px; font-weight: 900; border-radius: 6px; 
+            margin-top: 25px; font-size: 16px; text-transform: uppercase; letter-spacing: 3px;
         }
+        .btn-main:active { opacity: 0.8; transform: translateY(1px); }
 
-        .counter-value {
-            font-size: 32px;
-            font-weight: 200;
-            letter-spacing: -1px;
-        }
-
-        /* Кнопка — массивная плитка алюминия */
-        .btn { 
-            width: 100%; 
-            background: #fff; /* Белая или стальная кнопка — высший премиум */
-            color: #000; 
-            border: none; 
-            padding: 24px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            border-radius: 2px; 
-            margin-top: 40px; 
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: all 0.3s ease;
-        }
-        .btn:active { transform: translateY(2px); opacity: 0.8; }
-
-        ::placeholder { color: #222; }
+        ::placeholder { color: #444; }
     </style>
 </head>
 <body>
     <div class="header-section">
         <div class="header">РЕЙС ОК</div>
-        <div class="sub-header">Automotive & Logistics</div>
+        <div class="sub-header">PREMIUM LOGISTICS</div>
     </div>
 
     <div class="input-group">
-        <div class="label">Выбор локации</div>
+        <div class="label">Локация отгрузки</div>
         <select id="city">
             <option value="" disabled selected>— ВЫБРАТЬ —</option>
             <option value="Коледино">КОЛЕДИНО</option>
+            <option value="Казань">КАЗАНЬ</option>
             <option value="Электросталь">ЭЛЕКТРОСТАЛЬ</option>
             <option value="Тула">ТУЛА</option>
             <option value="Подольск">ПОДОЛЬСК</option>
-            <option value="Казань">КАЗАНИ</option>
             <option value="Краснодар">КРАСНОДАР</option>
         </select>
     </div>
 
     <div class="input-group">
-        <div class="label">Единицы груза</div>
+        <div class="label">Количество единиц</div>
         <div class="counter-container">
-            <button class="counter-btn" onclick="updateQty(-1)">—</button>
-            <div class="counter-value" id="qty_display">1</div>
+            <button class="counter-btn" onclick="updateQty(-1)">−</button>
+            <div class="counter-value" id="qty_val">1</div>
             <button class="counter-btn" onclick="updateQty(1)">+</button>
         </div>
     </div>
 
     <div class="input-group">
-        <div class="label">Дата планирования</div>
-        <input type="date" id="date">
+        <div class="label">Тип поставки</div>
+        <select id="type">
+            <option value="КОРОБ">📦 КОРОБ</option>
+            <option value="ПАЛЛЕТА">🏗️ ПАЛЛЕТА</option>
+        </select>
     </div>
 
     <div class="input-group">
         <div class="label">Организация</div>
-        <input type="text" id="company" placeholder="NAME / TAX ID">
+        <input type="text" id="company" placeholder="ИНН / НАЗВАНИЕ">
     </div>
 
     <div class="input-group">
-        <div class="label">Телефон</div>
-        <input type="tel" id="phone" placeholder="+7 — — —">
+        <div class="label">Контактный номер</div>
+        <input type="tel" id="phone" placeholder="+7 ——— ——— —— ——">
     </div>
 
-    <button class="btn" id="send">Подтвердить заказ</button>
+    <button class="btn-main" id="send">ПОДТВЕРДИТЬ</button>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.backgroundColor = '#000000';
-        tg.headerColor = '#000000';
 
         let count = 1;
         function updateQty(val) {
             count = Math.max(1, count + val);
-            document.getElementById('qty_display').innerText = count;
-            tg.HapticFeedback.impactOccurred('medium');
+            document.getElementById('qty_val').innerText = count;
+            tg.HapticFeedback.impactOccurred('heavy'); // Усиленный виброотклик
         }
-
-        // Авто-дата
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
 
         document.getElementById('send').addEventListener('click', () => {
             const data = {
                 city: document.getElementById('city').value,
                 qty: count,
-                date: document.getElementById('date').value,
+                type: document.getElementById('type').value,
                 company: document.getElementById('company').value,
-                phone: document.getElementById('phone').value
+                phone: document.getElementById('phone').value,
+                date: "ЗАВТРА"
             };
             
-            if (!data.city || !data.phone) {
+            if (!data.city || !data.phone || !data.company) {
                 tg.HapticFeedback.notificationOccurred('error');
-                tg.showAlert("ТРЕБУЕТСЯ ЗАПОЛНЕНИЕ ВСЕХ ПОЛЕЙ");
+                tg.showAlert("НЕОБХОДИМО ЗАПОЛНИТЬ ВСЕ ДАННЫЕ");
                 return;
             }
 
