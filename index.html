@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>РЕЙС ОК | PREMIUM</title>
-    <script src="https://telegram.org"></script>
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <!-- Исправлен протокол и URL для Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Исправлен URL для Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root { --neon-pink: #ff007a; --glass: rgba(255, 255, 255, 0.08); }
-        body { 
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); 
-            color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; 
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px;
             -webkit-font-smoothing: antialiased; text-transform: uppercase;
         }
         .header-section { margin-bottom: 25px; text-align: center; }
@@ -19,28 +21,28 @@
 
         .input-group { margin-bottom: 18px; }
         .label { color: rgba(255,255,255,0.6); font-size: 10px; margin-bottom: 8px; font-weight: 800; letter-spacing: 1.5px; }
-        
-        input, select { 
-            width: 100%; background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #fff; padding: 15px; border-radius: 12px; box-sizing: border-box; 
+
+        input, select {
+            width: 100%; background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff; padding: 15px; border-radius: 12px; box-sizing: border-box;
             font-size: 16px; font-weight: 600; appearance: none; backdrop-filter: blur(10px);
         }
         input:focus { border-color: var(--neon-pink); outline: none; }
 
         .counter-container {
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); 
+            background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px; padding: 6px;
         }
         .counter-btn {
-            width: 55px; height: 55px; background: rgba(255, 255, 255, 0.1); 
+            width: 55px; height: 55px; background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 28px; border-radius: 10px; cursor: pointer;
         }
         .counter-value { font-size: 28px; font-weight: 900; width: 50px; text-align: center; }
 
-        .btn-main { 
+        .btn-main {
             width: 100%; background: linear-gradient(45deg, var(--neon-pink), #9d50bb);
-            color: #fff; border: none; padding: 20px; font-weight: 900; border-radius: 14px; 
+            color: #fff; border: none; padding: 20px; font-weight: 900; border-radius: 14px;
             margin-top: 15px; font-size: 16px; letter-spacing: 2px; cursor: pointer;
             box-shadow: 0 5px 20px rgba(255, 0, 122, 0.4);
         }
@@ -113,57 +115,71 @@
         // Кнопки + и -
         document.getElementById('plus').onclick = function() {
             count++;
-            document.getElementById('qty_val').innerText = count;
+            document.getElementById('qty_val').textContent = count;
             tg.HapticFeedback.impactOccurred('medium');
         };
         document.getElementById('minus').onclick = function() {
-            if (count > 1) count--;
-            document.getElementById('qty_val').innerText = count;
-            tg.HapticFeedback.impactOccurred('medium');
-        };
-
-        // Авто-дата
-        function updateWBDate() {
-            const val = document.getElementById('date_reisok').value;
-            if (val) {
-                const d = new Date(val);
-                d.setDate(d.getDate() + 1);
-                document.getElementById('date_wb').value = d.toLocaleDateString('ru-RU');
-            }
+            if (count > 1) {
+                count--;
+                document.getElementById('qty_val').textContent = count;
+                            tg.HapticFeedback.impactOccurred('medium');
         }
-        document.getElementById('date_reisok').value = new Date().toISOString().split('T')[0];
-        updateWBDate();
+    };
 
-        // ФИНАЛЬНАЯ ОТПРАВКА С ПРОВЕРКОЙ
-        document.getElementById('send').onclick = function() {
-            const data = {
-                city: document.getElementById('city').value,
-                qty: count,
-                type: document.getElementById('type').value,
-                company: document.getElementById('company').value,
-                phone: document.getElementById('phone').value,
-                date_reisok: document.getElementById('date_reisok').value,
-                date_wb: document.getElementById('date_wb').value
-            };
-
-            if (!data.city || !data.phone || !data.company) {
-                tg.showAlert("ЗАПОЛНИТЕ ВСЕ ПОЛЯ!");
+    // Авто-дата
+    function updateWBDate() {
+        const val = document.getElementById('date_reisok').value;
+        if (val) {
+            const d = new Date(val);
+            // Проверяем, что дата валидна
+            if (isNaN(d.getTime())) {
+                document.getElementById('date_wb').value = '';
                 return;
             }
+            d.setDate(d.getDate() + 1);
+            // Форматируем дату в формате ДД.ММ.ГГГГ для единообразия
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0'); // Месяц начинается с 0
+            const year = d.getFullYear();
+            document.getElementById('date_wb').value = `${day}.${month}.${year}`;
+        } else {
+            document.getElementById('date_wb').value = '';
+        }
+    }
 
-            // ПРОВЕРКА ПРЯМО В ТЕЛЕФОНЕ
-            tg.showConfirm("ОТПРАВИТЬ ЗАЯВКУ В ТАБЛИЦУ?", function(isConfirmed) {
-                if (isConfirmed) {
-                    tg.HapticFeedback.notificationOccurred('success');
-                    
-                    // Попытка отправки данных
-                    tg.sendData(JSON.stringify(data));
-                    
-                    // Закрываем окно через 200мс
-                    setTimeout(() => { tg.close(); }, 200);
-                }
-            });
+    // Устанавливаем текущую дату по умолчанию и обновляем дату отгрузки
+    document.getElementById('date_reisok').value = new Date().toISOString().split('T')[0];
+    updateWBDate();
+
+    // ФИНАЛЬНАЯ ОТПРАВКА С ПРОВЕРКОЙ
+    document.getElementById('send').onclick = function() {
+        const data = {
+            city: document.getElementById('city').value,
+            qty: count,
+            type: document.getElementById('type').value,
+            company: document.getElementById('company').value,
+            phone: document.getElementById('phone').value,
+            date_reisok: document.getElementById('date_reisok').value,
+            date_wb: document.getElementById('date_wb').value
         };
-    </script>
-</body>
-</html>
+
+        // Проверка обязательных полей
+        if (!data.city || !data.phone || !data.company) {
+            tg.showAlert("ЗАПОЛНИТЕ ВСЕ ОБЯЗАТЕЛЬНЫЕ ПОЛЯ!");
+            return;
+        }
+
+        // Подтверждение отправки
+        tg.showConfirm("ОТПРАВИТЬ ЗАЯВКУ В ТАБЛИЦУ?", function(isConfirmed) {
+            if (isConfirmed) {
+                tg.HapticFeedback.notificationOccurred('success');
+
+                // Попытка отправки данных
+                tg.sendData(JSON.stringify(data));
+
+                // Закрываем окно через 200 мс
+                setTimeout(() => { tg.close(); }, 200);
+            }
+        });
+    };
+</script>
