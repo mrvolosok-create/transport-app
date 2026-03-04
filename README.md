@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>РЕЙС ОК | PREMIUM</title>
+    <script src="https://telegram.org"></script>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root { --neon-pink: #ff007a; --glass: rgba(255, 255, 255, 0.08); }
+        body { 
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); 
+            color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; 
+            -webkit-font-smoothing: antialiased; text-transform: uppercase;
+        }
+        .header-section { margin-bottom: 25px; text-align: center; }
+        .header { font-size: 32px; font-weight: 900; letter-spacing: 5px; text-shadow: 0 0 15px rgba(255, 0, 122, 0.5); }
+        .sub-header { color: var(--neon-pink); font-size: 10px; letter-spacing: 3px; font-weight: 700; opacity: 0.9; }
+
+        .input-group { margin-bottom: 18px; }
+        .label { color: rgba(255,255,255,0.6); font-size: 10px; margin-bottom: 8px; font-weight: 800; letter-spacing: 1.5px; }
+        
+        input, select { 
+            width: 100%; background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #fff; padding: 15px; border-radius: 12px; box-sizing: border-box; 
+            font-size: 16px; font-weight: 600; appearance: none; backdrop-filter: blur(10px);
+        }
+        input:focus { border-color: var(--neon-pink); outline: none; }
+
+        .counter-container {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 12px; padding: 6px;
+        }
+        .counter-btn {
+            width: 55px; height: 55px; background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 28px; border-radius: 10px; cursor: pointer;
+        }
+        .counter-value { font-size: 28px; font-weight: 900; width: 50px; text-align: center; }
+
+        .btn-main { 
+            width: 100%; background: linear-gradient(45deg, var(--neon-pink), #9d50bb);
+            color: #fff; border: none; padding: 20px; font-weight: 900; border-radius: 14px; 
+            margin-top: 15px; font-size: 16px; letter-spacing: 2px; cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 0, 122, 0.4);
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="header">РЕЙС ОК</div>
+        <div class="sub-header">PREMIUM LOGISTICS SERVICE</div>
+    </div>
+
+    <div class="input-group">
+        <div class="label">Склад отгрузки</div>
+        <select id="city">
+            <option value="" disabled selected>— ВЫБРАТЬ ЛОКАЦИЮ —</option>
+            <option value="Коледино">КОЛЕДИНО</option>
+            <option value="Казань">КАЗАНЬ</option>
+            <option value="Электросталь">ЭЛЕКТРОСТАЛЬ</option>
+            <option value="Тула">ТУЛА</option>
+            <option value="Подольск">ПОДОЛЬСК</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <div class="label">Привоз на склад РЕЙСОК</div>
+        <input type="date" id="date_reisok" onchange="updateWBDate()">
+    </div>
+
+    <div class="input-group">
+        <div class="label">Отгрузка на склад ВБ</div>
+        <input type="text" id="date_wb" disabled>
+    </div>
+
+    <div class="input-group">
+        <div class="label">Количество</div>
+        <div class="counter-container">
+            <button type="button" class="counter-btn" id="minus">−</button>
+            <div class="counter-value" id="qty_val">1</div>
+            <button type="button" class="counter-btn" id="plus">+</button>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <div class="label">Тип поставки</div>
+        <select id="type">
+            <option value="КОРОБ">📦 КОРОБ</option>
+            <option value="ПАЛЛЕТА">🏗️ ПАЛЛЕТА</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <div class="label">Организация</div>
+        <input type="text" id="company" placeholder="ИНН / НАЗВАНИЕ">
+    </div>
+
+    <div class="input-group">
+        <div class="label">Телефон</div>
+        <input type="tel" id="phone" placeholder="+7 ——— ——— —— ——">
+    </div>
+
+    <button type="button" class="btn-main" id="send">ЗАБРОНИРОВАТЬ</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let count = 1;
+
+        // Кнопки + и -
+        document.getElementById('plus').onclick = function() {
+            count++;
+            document.getElementById('qty_val').innerText = count;
+            tg.HapticFeedback.impactOccurred('medium');
+        };
+        document.getElementById('minus').onclick = function() {
+            if (count > 1) count--;
+            document.getElementById('qty_val').innerText = count;
+            tg.HapticFeedback.impactOccurred('medium');
+        };
+
+        // Авто-дата
+        function updateWBDate() {
+            const val = document.getElementById('date_reisok').value;
+            if (val) {
+                const d = new Date(val);
+                d.setDate(d.getDate() + 1);
+                document.getElementById('date_wb').value = d.toLocaleDateString('ru-RU');
+            }
+        }
+        document.getElementById('date_reisok').value = new Date().toISOString().split('T')[0];
+        updateWBDate();
+
+        // ФИНАЛЬНАЯ ОТПРАВКА С ПРОВЕРКОЙ
+        document.getElementById('send').onclick = function() {
+            const data = {
+                city: document.getElementById('city').value,
+                qty: count,
+                type: document.getElementById('type').value,
+                company: document.getElementById('company').value,
+                phone: document.getElementById('phone').value,
+                date_reisok: document.getElementById('date_reisok').value,
+                date_wb: document.getElementById('date_wb').value
+            };
+
+            if (!data.city || !data.phone || !data.company) {
+                tg.showAlert("ЗАПОЛНИТЕ ВСЕ ПОЛЯ!");
+                return;
+            }
+
+            // ПРОВЕРКА ПРЯМО В ТЕЛЕФОНЕ
+            tg.showConfirm("ОТПРАВИТЬ ЗАЯВКУ В ТАБЛИЦУ?", function(isConfirmed) {
+                if (isConfirmed) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                    
+                    // Попытка отправки данных
+                    tg.sendData(JSON.stringify(data));
+                    
+                    // Закрываем окно через 200мс
+                    setTimeout(() => { tg.close(); }, 200);
+                }
+            });
+        };
+    </script>
+</body>
+</html>
